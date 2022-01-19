@@ -13,10 +13,14 @@ import com.todo.notesapp.data.models.ToDoNotesData
 import com.todo.notesapp.data.viewmodel.ToDoNotesViewModel
 import com.todo.notesapp.databinding.FragmentAddNotesBinding
 import com.todo.notesapp.databinding.FragmentNotesListBinding
+import com.todo.notesapp.fragments.SharedViewModel
 
 class AddNotesFragment : Fragment() {
+
     private lateinit var binding : FragmentAddNotesBinding
     private val mTodoNotesViewModel: ToDoNotesViewModel by viewModels()
+    private val mSharedViewModel: SharedViewModel by viewModels()
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,14 +47,14 @@ class AddNotesFragment : Fragment() {
        val title = binding.edtAddNotesTitle.text.toString()
        val priority = binding.spnAddNotesSpinner.selectedItem.toString()
        val description = binding.edtAddNotesDescription.text.toString()
-       val validation = verifyDataFromUser(title, description)
+       val validation = mSharedViewModel.verifyDataFromUser(title, description)
 
         if (validation) {
             //Insert data to database.
             val newData = ToDoNotesData(
                 0,
                 title,
-                parsePriority(priority),
+                mSharedViewModel.parsePriority(priority),
                 description
             )
             mTodoNotesViewModel.insertData(newData)
@@ -63,18 +67,4 @@ class AddNotesFragment : Fragment() {
 
     }
 
-    private fun verifyDataFromUser(title: String, description: String): Boolean {
-        return if(TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
-            false
-        }else !(title.isEmpty() || description.isEmpty())
-    }
-
-    private fun parsePriority(priority: String) : Priority {
-        return when(priority) {
-            "High Priority" -> Priority.HIGH
-            "Medium Priority" -> Priority.MEDIUM
-            "Low Priority" -> Priority.LOW
-            else -> Priority.LOW
-        }
-    }
 }
