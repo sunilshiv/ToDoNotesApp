@@ -66,5 +66,8 @@ dependencies {
     implementation "androidx.room:room-ktx:2.4.1"
     androidTestImplementation "androidx.room:room-testing:2.4.1"
 
+    // Kotlin components
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2"
+    api "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.5.2"
 
 }
