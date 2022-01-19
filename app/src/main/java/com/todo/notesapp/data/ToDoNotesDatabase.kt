@@ -1,11 +1,11 @@
 package com.todo.notesapp.data
 
 import android.content.Context
-import androidx.room.Database
-import androidx.room.Room
-import androidx.room.RoomDatabase
+import androidx.room.*
+import com.todo.notesapp.data.models.ToDoNotesData
 
 @Database(entities = [ToDoNotesData::class], version = 1, exportSchema = false)
+@TypeConverters(PriorityConverter::class)
 abstract class ToDoNotesDatabase : RoomDatabase() {
 
     abstract fun toDoNotesDao() : ToDoNotesDao

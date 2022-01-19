@@ -1,4 +1,4 @@
-package com.todo.notesapp.data
+package com.todo.notesapp.data.models
 
 enum class Priority {
     HIGH,
