@@ -39,7 +39,7 @@ abstract class ToDoNotesDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: ToDoNotesDatabase? = null
 
-        fun getInstance(context: Context): ToDoNotesDatabase {
+        fun getDatabase(context: Context): ToDoNotesDatabase {
             synchronized(this) {
                 var instance = INSTANCE
 
