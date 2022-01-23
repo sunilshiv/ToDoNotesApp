@@ -14,7 +14,7 @@ class ToDoNotesViewModel(application: Application): AndroidViewModel(application
 
     private val toDoNotesDao = ToDoNotesDatabase.getDatabase(application).toDoNotesDao()
     private val toDoNotesRepository : ToDoNotesRepository
-    private val getAllData: LiveData<List<ToDoNotesData>>
+    val getAllData: LiveData<List<ToDoNotesData>>
 
     init {
         toDoNotesRepository = ToDoNotesRepository(toDoNotesDao)
