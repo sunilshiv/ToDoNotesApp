@@ -26,4 +26,10 @@ class ToDoNotesViewModel(application: Application): AndroidViewModel(application
             toDoNotesRepository.insertData(toDoNotesData)
         }
     }
+
+    fun updateData(toDoNotesData: ToDoNotesData) {
+        viewModelScope.launch (Dispatchers.IO){
+            toDoNotesRepository.updateData(toDoNotesData)
+        }
+    }
 }
