@@ -29,6 +29,7 @@ class AddNotesFragment : Fragment() {
         setHasOptionsMenu(true)
         // Inflate the layout for this fragment
         binding = FragmentAddNotesBinding.inflate(inflater, container, false)
+        binding.spnAddNotesSpinner.onItemSelectedListener = mSharedViewModel.listener
         return binding.root
     }
 
