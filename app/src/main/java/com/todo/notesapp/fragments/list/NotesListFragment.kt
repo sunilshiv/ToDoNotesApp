@@ -43,9 +43,9 @@ class NotesListFragment : Fragment() {
                 findNavController().navigate(R.id.action_notesListFragment_to_addNotesFragment)
             }
 
-            notesListFragmentLayout.setOnClickListener {
+          /*  notesListFragmentLayout.setOnClickListener {
                 findNavController().navigate(R.id.action_notesListFragment_to_updateNotesFragment)
-            }
+            }*/
         }
 
         // set menu

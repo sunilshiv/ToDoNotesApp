@@ -1,10 +1,7 @@
 package com.todo.notesapp.data
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.todo.notesapp.data.models.ToDoNotesData
 
 @Dao
@@ -15,5 +12,8 @@ interface ToDoNotesDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertData(toDoNotes: ToDoNotesData)
+
+    @Update
+    suspend fun updateData(toDoNotes: ToDoNotesData)
 
 }

@@ -11,4 +11,8 @@ class ToDoNotesRepository(private val toDoNotesDao: ToDoNotesDao) {
     suspend fun insertData(toDoNotesData: ToDoNotesData) {
         toDoNotesDao.insertData(toDoNotesData)
     }
+
+    suspend fun updateData(toDoNotesData: ToDoNotesData) {
+        toDoNotesDao.updateData(toDoNotesData)
+    }
 }

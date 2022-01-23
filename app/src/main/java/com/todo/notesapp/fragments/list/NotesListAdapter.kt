@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.todo.notesapp.R
 import com.todo.notesapp.data.models.Priority
@@ -25,7 +26,10 @@ class NotesListAdapter: RecyclerView.Adapter<NotesListAdapter.NotesListViewHolde
     override fun onBindViewHolder(holder: NotesListViewHolder, position: Int) {
       holder.binding.titleTxt.text = todoNotesDataList[position].title
       holder.binding.titleDescription.text = todoNotesDataList[position].description
-      holder.binding.rowBackground
+      holder.binding.rowBackground.setOnClickListener {
+          val action = NotesListFragmentDirections.actionNotesListFragmentToUpdateNotesFragment(todoNotesDataList[position])
+          holder.itemView.findNavController().navigate(action)
+      }
 
         when (todoNotesDataList[position].priority) {
             Priority.HIGH -> holder.binding.priorityIndicator.setCardBackgroundColor(
