@@ -32,4 +32,16 @@ class ToDoNotesViewModel(application: Application): AndroidViewModel(application
             toDoNotesRepository.updateData(toDoNotesData)
         }
     }
+
+    fun deleteItem(toDoNotesData: ToDoNotesData) {
+        viewModelScope.launch(Dispatchers.IO) {
+            toDoNotesRepository.deleteItem(toDoNotesData)
+        }
+    }
+
+    fun deleteAll() {
+        viewModelScope.launch(Dispatchers.IO) {
+            toDoNotesRepository.deleteAll()
+        }
+    }
 }

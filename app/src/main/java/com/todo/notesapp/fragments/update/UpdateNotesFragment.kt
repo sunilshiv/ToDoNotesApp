@@ -1,5 +1,6 @@
 package com.todo.notesapp.fragments.update
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
@@ -42,8 +43,9 @@ class UpdateNotesFragment : Fragment() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if(item.itemId == R.id.menu_save_notes) {
-            updateItem()
+        when(item.itemId) {
+            R.id.menu_save_notes -> updateItem()
+            R.id.menu_delete_notes -> confirmItemRemoval()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -68,5 +70,22 @@ class UpdateNotesFragment : Fragment() {
         } else {
             Toast.makeText(requireContext(), "Please fill the all the items!", Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun confirmItemRemoval() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes") {_, _, ->
+            toDoNotesViewModel.deleteItem(args.currentItem)
+            Toast.makeText(
+                requireContext(),
+                "Successfully removed: ${args.currentItem.title}",
+                Toast.LENGTH_SHORT
+            ).show()
+            findNavController().navigate(R.id.action_updateNotesFragment_to_notesListFragment)
+        }
+        builder.setNegativeButton("No") {_,_ -> }
+        builder.setTitle("Delete ${args.currentItem.title}?")
+        builder.setMessage("Are you sure you want to remove ${args.currentItem.title}?")
+        builder.create().show()
     }
 }

@@ -7,10 +7,18 @@ import android.widget.AdapterView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.MutableLiveData
 import com.todo.notesapp.R
 import com.todo.notesapp.data.models.Priority
+import com.todo.notesapp.data.models.ToDoNotesData
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
+
+    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(true)
+
+    fun checkIfDatabaseEmpty(toDoNotesData: List<ToDoNotesData>) {
+        emptyDatabase.value = toDoNotesData.isEmpty()
+    }
 
     val listener: AdapterView.OnItemSelectedListener = object :
     AdapterView.OnItemSelectedListener {
@@ -51,5 +59,6 @@ class SharedViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
+    
 
 }

@@ -16,4 +16,10 @@ interface ToDoNotesDao {
     @Update
     suspend fun updateData(toDoNotes: ToDoNotesData)
 
+    @Delete
+    suspend fun deleteItem(toDoNotes: ToDoNotesData)
+
+    @Query("DELETE FROM todo_notes")
+    suspend fun deleteAll()
+
 }
