@@ -15,4 +15,12 @@ class ToDoNotesRepository(private val toDoNotesDao: ToDoNotesDao) {
     suspend fun updateData(toDoNotesData: ToDoNotesData) {
         toDoNotesDao.updateData(toDoNotesData)
     }
+
+    suspend fun deleteItem(toDoNotesData: ToDoNotesData) {
+        toDoNotesDao.deleteItem(toDoNotesData)
+    }
+
+    suspend fun deleteAll() {
+        toDoNotesDao.deleteAll()
+    }
 }

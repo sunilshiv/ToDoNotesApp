@@ -36,7 +36,7 @@
         android:contentDescription="TODO" />
 
     <ImageView
-        android:id="@+id/imageView2"
+        android:id="@+id/no_data_imageview"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:src="@drawable/ic_no_data"
@@ -48,7 +48,7 @@
         app:layout_constraintVertical_bias="0.37" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/no_data_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -58,6 +58,6 @@
         android:visibility="gone"
         app:layout_constraintEnd_toEndOf="@+id/notesListRecyclerView"
         app:layout_constraintStart_toStartOf="@+id/notesListRecyclerView"
-        app:layout_constraintTop_toBottomOf="@+id/imageView2" />
+        app:layout_constraintTop_toBottomOf="@+id/no_data_imageview" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
