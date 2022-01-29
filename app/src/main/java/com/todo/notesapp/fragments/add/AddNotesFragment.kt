@@ -14,6 +14,7 @@ import com.todo.notesapp.data.viewmodel.ToDoNotesViewModel
 import com.todo.notesapp.databinding.FragmentAddNotesBinding
 import com.todo.notesapp.databinding.FragmentNotesListBinding
 import com.todo.notesapp.fragments.SharedViewModel
+import com.todo.notesapp.utils.NotesUtils.hideKeyboard
 
 class AddNotesFragment : Fragment() {
 
@@ -66,6 +67,11 @@ class AddNotesFragment : Fragment() {
             Toast.makeText(requireContext(), "Please fill all the fields", Toast.LENGTH_SHORT).show()
         }
 
+    }
+
+    override fun onPause() {
+        hideKeyboard()
+        super.onPause()
     }
 
 }
