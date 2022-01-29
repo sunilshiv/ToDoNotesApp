@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.Toast
+import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -19,7 +20,7 @@ import com.todo.notesapp.fragments.SharedViewModel
 import com.todo.notesapp.fragments.list.adapter.NotesListAdapter
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
-class NotesListFragment : Fragment() {
+class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private var _binding : FragmentNotesListBinding? = null
     private val binding get() = _binding!!
@@ -66,6 +67,9 @@ class NotesListFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.notes_list_fragment_menu, menu)
+        val search = menu.findItem(R.id.menu_search)
+        val searchView = search.actionView as? SearchView
+         searchView?.setOnQueryTextListener(this)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -73,6 +77,31 @@ class NotesListFragment : Fragment() {
             confirmRemoval()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+
+    override fun onQueryTextSubmit(query: String?): Boolean {
+       if(query != null) {
+           searchThroughDatabase(query)
+       }
+        return true
+    }
+
+    override fun onQueryTextChange(query: String?): Boolean {
+        if(query != null) {
+            searchThroughDatabase(query)
+        }
+        return true
+    }
+
+    private fun searchThroughDatabase(query: String) {
+        val searchQuery = "%$query%"
+        mToDoNotesViewModel.searchDatabase(searchQuery).observe(this, Observer{ list ->
+            list?.let {
+                adapter.setData(it)
+            }
+
+        })
     }
 
     //Show AlertDialog to confirm removal of All items from the database table
@@ -126,5 +155,6 @@ class NotesListFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
 
 }

@@ -44,4 +44,8 @@ class ToDoNotesViewModel(application: Application): AndroidViewModel(application
             toDoNotesRepository.deleteAll()
         }
     }
+
+    fun searchDatabase(searchQuery: String): LiveData<List<ToDoNotesData>> {
+        return toDoNotesRepository.searchDatabase(searchQuery)
+    }
 }

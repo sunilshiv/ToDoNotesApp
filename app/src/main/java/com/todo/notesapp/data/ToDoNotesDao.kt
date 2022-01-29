@@ -22,4 +22,7 @@ interface ToDoNotesDao {
     @Query("DELETE FROM todo_notes")
     suspend fun deleteAll()
 
+    @Query("SELECT * FROM todo_notes where title like :searchQuery")
+    fun searchDatabase(searchQuery: String): LiveData<List<ToDoNotesData>>
+
 }
