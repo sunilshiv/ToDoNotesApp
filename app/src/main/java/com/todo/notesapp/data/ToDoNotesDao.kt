@@ -22,7 +22,13 @@ interface ToDoNotesDao {
     @Query("DELETE FROM todo_notes")
     suspend fun deleteAll()
 
-    @Query("SELECT * FROM todo_notes where title like :searchQuery")
+    @Query("SELECT * FROM todo_notes WHERE title LIKE :searchQuery")
     fun searchDatabase(searchQuery: String): LiveData<List<ToDoNotesData>>
+
+    @Query("SELECT * FROM todo_notes ORDER BY CASE WHEN priority LIKE 'H%'THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'L%' THEN 3 END ")
+    fun sortByHighPriority(): LiveData<List<ToDoNotesData>>
+
+    @Query("SELECT * FROM todo_notes ORDER BY CASE WHEN priority LIKE 'L%'THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'H%' THEN 3 END ")
+    fun sortByLowPriority(): LiveData<List<ToDoNotesData>>
 
 }
