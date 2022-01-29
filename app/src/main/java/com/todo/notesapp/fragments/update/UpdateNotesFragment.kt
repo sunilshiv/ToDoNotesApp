@@ -1,8 +1,11 @@
 package com.todo.notesapp.fragments.update
 
+import android.app.Activity
 import android.app.AlertDialog
+import android.content.Context
 import android.os.Bundle
 import android.view.*
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -13,6 +16,7 @@ import com.todo.notesapp.data.models.ToDoNotesData
 import com.todo.notesapp.data.viewmodel.ToDoNotesViewModel
 import com.todo.notesapp.databinding.FragmentUpdateNotesBinding
 import com.todo.notesapp.fragments.SharedViewModel
+import com.todo.notesapp.utils.NotesUtils.hideKeyboard
 
 class UpdateNotesFragment : Fragment() {
 
@@ -95,4 +99,10 @@ class UpdateNotesFragment : Fragment() {
         super.onDestroyView()
         _binding = null
     }
+
+    override fun onPause() {
+        hideKeyboard()
+        super.onPause()
+    }
+
 }

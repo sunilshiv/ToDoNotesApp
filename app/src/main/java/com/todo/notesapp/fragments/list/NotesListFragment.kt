@@ -1,44 +1,46 @@
 package com.todo.notesapp.fragments.list
 
 import android.app.AlertDialog
-import android.content.Context
 import android.os.Bundle
 import android.view.*
-import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.todo.notesapp.R
+import com.todo.notesapp.data.models.ToDoNotesData
 import com.todo.notesapp.data.viewmodel.ToDoNotesViewModel
 import com.todo.notesapp.databinding.FragmentNotesListBinding
 import com.todo.notesapp.fragments.SharedViewModel
+import com.todo.notesapp.fragments.list.adapter.NotesListAdapter
 
 class NotesListFragment : Fragment() {
 
     private var _binding : FragmentNotesListBinding? = null
     private val binding get() = _binding!!
     private val adapter: NotesListAdapter by lazy { NotesListAdapter() }
-    private val toDoNotesViewModel: ToDoNotesViewModel by viewModels()
+    private val mToDoNotesViewModel: ToDoNotesViewModel by viewModels()
     private val mSharedViewModel: SharedViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
         //Data binding
         _binding = FragmentNotesListBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         binding.mSharedViewModel = mSharedViewModel
 
-        view?.hideKeyboard()
         //Setup recyclerview
         createRecyclerView()
 
         //observe LiveData
-        toDoNotesViewModel.getAllData.observe(viewLifecycleOwner, Observer { data ->
+        mToDoNotesViewModel.getAllData.observe(viewLifecycleOwner, Observer { data ->
             mSharedViewModel.checkIfDatabaseEmpty(data)
             adapter.setData(data)
         })
@@ -53,6 +55,9 @@ class NotesListFragment : Fragment() {
         val recyclerView = binding.notesListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+
+        //Swipe to delete
+        onSwipeToDelete(recyclerView)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -70,7 +75,7 @@ class NotesListFragment : Fragment() {
     private fun confirmRemoval() {
         val builder = AlertDialog.Builder(requireContext())
         builder.setPositiveButton("Yes") {_,_ ->
-            toDoNotesViewModel.deleteAll()
+            mToDoNotesViewModel.deleteAll()
             Toast.makeText(
                 requireContext(),
                 "Successfully Removed Everything!",
@@ -83,13 +88,39 @@ class NotesListFragment : Fragment() {
        builder.create().show()
     }
 
-    fun View.hideKeyboard() {
-        val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        imm.hideSoftInputFromWindow(windowToken, 0)
+    private fun onSwipeToDelete(recyclerView: RecyclerView) {
+
+        val swipeToDeleteCallback = object: SwipeToDelete() {
+            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+                val deletedItem = adapter.todoNotesDataList[viewHolder.adapterPosition]
+                //Delete item
+                mToDoNotesViewModel.deleteItem(deletedItem)
+                adapter.notifyItemRemoved(viewHolder.adapterPosition)
+                // restore item
+                restoreDeletedData(viewHolder.itemView, deletedItem, viewHolder.adapterPosition)
+            }
+        }
+        val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
+        itemTouchHelper.attachToRecyclerView(recyclerView)
+
+    }
+
+    private fun restoreDeletedData(view: View, deletedItem: ToDoNotesData, position: Int) {
+        val snackBar = Snackbar.make(
+            view,
+            "Deleted '${deletedItem.title}'",
+            Snackbar.LENGTH_LONG
+        )
+        snackBar.setAction("Undo") {
+            mToDoNotesViewModel.insertData(deletedItem)
+            adapter.notifyItemChanged(position)
+        }
+        snackBar.show()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
     }
+
 }
