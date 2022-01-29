@@ -2,62 +2,72 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-<androidx.constraintlayout.widget.ConstraintLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="24dp"
-    tools:context=".fragments.update.UpdateNotesFragment">
+    <data>
+        <variable
+            name="args"
+            type="com.todo.notesapp.fragments.update.UpdateNotesFragmentArgs" />
+    </data>
 
-    <EditText
-        android:id="@+id/edtUpdateNotesTitle"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:layout_marginTop="45dp"
-        android:ems="10"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:inputType="textPersonName"
-        android:hint="@string/addNotesTitle"
-        android:background="@drawable/custom_edittext_background"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp"
+        tools:context=".fragments.update.UpdateNotesFragment">
 
-    <Spinner
-        android:id="@+id/spnUpdateNotesSpinner"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:paddingStart="20dp"
-        android:paddingEnd="20dp"
-        android:layout_marginTop="8dp"
-        android:entries="@array/priorities"
-        android:background="@android:color/transparent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/edtUpdateNotesTitle" />
+        <EditText
+            android:id="@+id/edtUpdateNotesTitle"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="45dp"
+            android:ems="10"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:inputType="textPersonName"
+            android:hint="@string/addNotesTitle"
+            android:text="@{args.currentItem.title}"
+            android:background="@drawable/custom_edittext_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/edtAddNotesDescription"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="50dp"
-        android:ems="10"
-        android:gravity="start|top"
-        android:inputType="textMultiLine"
-        android:hint="@string/addNotesDescription"
-        android:paddingStart="24dp"
-        android:paddingEnd="24dp"
-        android:paddingTop="16dp"
-        android:foregroundGravity="top|left"
-        android:background="@drawable/custom_edittext_background"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spnUpdateNotesSpinner" />
+        <Spinner
+            android:id="@+id/spnUpdateNotesSpinner"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:paddingStart="20dp"
+            android:paddingEnd="20dp"
+            android:layout_marginTop="8dp"
+            android:entries="@array/priorities"
+            android:parsePriorityToInt="@{args.currentItem.priority}"
+            android:background="@android:color/transparent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/edtUpdateNotesTitle" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/edtAddNotesDescription"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="50dp"
+            android:ems="10"
+            android:gravity="start|top"
+            android:inputType="textMultiLine"
+            android:hint="@string/addNotesDescription"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:paddingTop="16dp"
+            android:text="@{args.currentItem.description}"
+            android:foregroundGravity="top|left"
+            android:background="@drawable/custom_edittext_background"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/spnUpdateNotesSpinner" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
+

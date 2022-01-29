@@ -13,45 +13,34 @@ import com.todo.notesapp.databinding.RowLayoutBinding
 
 class NotesListAdapter: RecyclerView.Adapter<NotesListAdapter.NotesListViewHolder>() {
 
-    var todoNotesDataList = emptyList<ToDoNotesData>()
-  private lateinit var binding : RowLayoutBinding
+    private var todoNotesDataList = emptyList<ToDoNotesData>()
+    private lateinit var binding : RowLayoutBinding
 
-    class NotesListViewHolder(val binding : RowLayoutBinding): RecyclerView.ViewHolder(binding.root)
+    class NotesListViewHolder(private val binding : RowLayoutBinding): RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(toDoNotesData: ToDoNotesData) {
+            binding.todoNotesData = toDoNotesData
+            binding.executePendingBindings()
+        }
+
+        companion object {
+            fun from(parent: ViewGroup): NotesListViewHolder {
+
+                val layoutInflater =  LayoutInflater.from(parent.context)
+                val binding = RowLayoutBinding.inflate(layoutInflater, parent, false)
+                return NotesListViewHolder(binding)
+
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NotesListViewHolder {
-        binding = RowLayoutBinding.inflate(LayoutInflater.from(parent.context), parent, false)
-        return NotesListViewHolder(binding)
+        return NotesListViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: NotesListViewHolder, position: Int) {
-      holder.binding.titleTxt.text = todoNotesDataList[position].title
-      holder.binding.titleDescription.text = todoNotesDataList[position].description
-      holder.binding.rowBackground.setOnClickListener {
-          val action = NotesListFragmentDirections.actionNotesListFragmentToUpdateNotesFragment(todoNotesDataList[position])
-          holder.itemView.findNavController().navigate(action)
-      }
-
-        when (todoNotesDataList[position].priority) {
-            Priority.HIGH -> holder.binding.priorityIndicator.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.red
-                )
-            )
-            Priority.MEDIUM -> holder.binding.priorityIndicator.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.yellow
-                )
-            )
-            Priority.LOW -> holder.binding.priorityIndicator.setCardBackgroundColor(
-                ContextCompat.getColor(
-                    holder.itemView.context,
-                    R.color.green
-                )
-            )
-        }
-
+     val currentItem = todoNotesDataList[position]
+     holder.bind(currentItem)
     }
 
     override fun getItemCount(): Int {

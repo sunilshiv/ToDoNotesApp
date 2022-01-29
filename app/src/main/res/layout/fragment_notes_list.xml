@@ -2,6 +2,11 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+    <data>
+        <variable
+            name="mSharedViewModel"
+            type="com.todo.notesapp.fragments.SharedViewModel" />
+    </data>
 <androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -29,6 +34,7 @@
         android:background="#03DAC5"
         android:clickable="true"
         android:focusable="true"
+        android:navigateToAddFragment="@{true}"
         android:src="@drawable/ic_add"
         android:tint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -41,6 +47,7 @@
         android:layout_height="100dp"
         android:src="@drawable/ic_no_data"
         android:visibility="gone"
+        android:emptyDatabase="@{mSharedViewModel.emptyDatabase}"
         app:layout_constraintBottom_toBottomOf="@+id/notesListRecyclerView"
         app:layout_constraintEnd_toEndOf="@+id/notesListRecyclerView"
         app:layout_constraintStart_toStartOf="@+id/notesListRecyclerView"
@@ -56,6 +63,7 @@
         android:text="@string/no_data"
         android:alpha="0.5"
         android:visibility="gone"
+        android:emptyDatabase="@{mSharedViewModel.emptyDatabase}"
         app:layout_constraintEnd_toEndOf="@+id/notesListRecyclerView"
         app:layout_constraintStart_toStartOf="@+id/notesListRecyclerView"
         app:layout_constraintTop_toBottomOf="@+id/no_data_imageview" />
