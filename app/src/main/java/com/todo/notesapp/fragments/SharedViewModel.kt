@@ -14,7 +14,7 @@ import com.todo.notesapp.data.models.ToDoNotesData
 
 class SharedViewModel(application: Application) : AndroidViewModel(application) {
 
-    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(true)
+    val emptyDatabase: MutableLiveData<Boolean> = MutableLiveData(false)
 
     fun checkIfDatabaseEmpty(toDoNotesData: List<ToDoNotesData>) {
         emptyDatabase.value = toDoNotesData.isEmpty()
