@@ -2,6 +2,7 @@ package com.todo.notesapp.fragments.list.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.todo.notesapp.data.models.ToDoNotesData
 import com.todo.notesapp.databinding.RowLayoutBinding
@@ -43,7 +44,9 @@ class NotesListAdapter: RecyclerView.Adapter<NotesListAdapter.NotesListViewHolde
     }
 
     fun setData(todoNotesData: List<ToDoNotesData>) {
+        val toDoNotesDiffUtils = ToDoNotesDiffUtils(todoNotesDataList, todoNotesData)
+        val todoNotesResult = DiffUtil.calculateDiff(toDoNotesDiffUtils)
         this.todoNotesDataList = todoNotesData
-        notifyDataSetChanged()
+        todoNotesResult.dispatchUpdatesTo(this)
     }
 }
