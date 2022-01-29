@@ -16,10 +16,13 @@ import com.todo.notesapp.fragments.SharedViewModel
 
 class UpdateNotesFragment : Fragment() {
 
-    private lateinit var binding : FragmentUpdateNotesBinding
     private val args by navArgs<UpdateNotesFragmentArgs>()
+
     private val mSharedViewModel: SharedViewModel by viewModels()
     private val toDoNotesViewModel: ToDoNotesViewModel by viewModels()
+
+    private var _binding: FragmentUpdateNotesBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,13 +31,12 @@ class UpdateNotesFragment : Fragment() {
         // set menu
         setHasOptionsMenu(true)
         // Inflate the layout for this fragment
-        binding = FragmentUpdateNotesBinding.inflate(inflater, container, false)
-        binding.apply {
-            edtUpdateNotesTitle.setText(args.currentItem.title)
-            edtAddNotesDescription.setText(args.currentItem.description)
-            spnUpdateNotesSpinner.setSelection(mSharedViewModel.parsePriorityInt(args.currentItem.priority))
-            spnUpdateNotesSpinner.onItemSelectedListener = mSharedViewModel.listener
-        }
+        _binding = FragmentUpdateNotesBinding.inflate(inflater, container, false)
+        binding.args = args
+
+        // Spinner Item Selected Listener
+        binding.spnUpdateNotesSpinner.onItemSelectedListener = mSharedViewModel.listener
+
         return binding.root
     }
 
@@ -87,5 +89,10 @@ class UpdateNotesFragment : Fragment() {
         builder.setTitle("Delete ${args.currentItem.title}?")
         builder.setMessage("Are you sure you want to remove ${args.currentItem.title}?")
         builder.create().show()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

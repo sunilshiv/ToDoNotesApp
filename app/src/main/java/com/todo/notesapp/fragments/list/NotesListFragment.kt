@@ -18,7 +18,8 @@ import com.todo.notesapp.fragments.SharedViewModel
 
 class NotesListFragment : Fragment() {
 
-    private lateinit var binding : FragmentNotesListBinding
+    private var _binding : FragmentNotesListBinding? = null
+    private val binding get() = _binding!!
     private val adapter: NotesListAdapter by lazy { NotesListAdapter() }
     private val toDoNotesViewModel: ToDoNotesViewModel by viewModels()
     private val mSharedViewModel: SharedViewModel by viewModels()
@@ -27,35 +28,20 @@ class NotesListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        /*val view  =  inflater.inflate(R.layout.fragment_notes_list, container, false)*/
-        /* view.findViewById<FloatingActionButton>(R.id.floatingActionButton).setOnClickListener {
-             findNavController().navigate(R.id.action_notesListFragment_to_addNotesFragment)
-         }*/
-        binding = FragmentNotesListBinding.inflate(inflater, container, false)
-        view?.hideKeyboard()
-        val recyclerView = binding.notesListRecyclerView
-        recyclerView.adapter = adapter
-        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        //Data binding
+        _binding = FragmentNotesListBinding.inflate(inflater, container, false)
+        binding.lifecycleOwner = this
+        binding.mSharedViewModel = mSharedViewModel
 
+        view?.hideKeyboard()
+        //Setup recyclerview
+        createRecyclerView()
+
+        //observe LiveData
         toDoNotesViewModel.getAllData.observe(viewLifecycleOwner, Observer { data ->
             mSharedViewModel.checkIfDatabaseEmpty(data)
             adapter.setData(data)
         })
-
-        mSharedViewModel.emptyDatabase.observe(viewLifecycleOwner, Observer {
-            showEmptyDatabase(it)
-        })
-
-        binding.apply {
-            floatingActionButton.setOnClickListener {
-                findNavController().navigate(R.id.action_notesListFragment_to_addNotesFragment)
-            }
-
-          /*  notesListFragmentLayout.setOnClickListener {
-                findNavController().navigate(R.id.action_notesListFragment_to_updateNotesFragment)
-            }*/
-        }
 
         // set menu
         setHasOptionsMenu(true)
@@ -63,20 +49,10 @@ class NotesListFragment : Fragment() {
         return binding.root
     }
 
-    private fun showEmptyDatabase(emptyDatabase: Boolean) {
-       if(emptyDatabase) {
-           binding.apply {
-               noDataImageview.visibility = View.VISIBLE
-               noDataTextView.visibility = View.VISIBLE
-
-           }
-
-       }else{
-           binding.apply {
-               noDataImageview.visibility = View.INVISIBLE
-               noDataTextView.visibility = View.INVISIBLE
-           }
-       }
+    private fun createRecyclerView() {
+        val recyclerView = binding.notesListRecyclerView
+        recyclerView.adapter = adapter
+        recyclerView.layoutManager = LinearLayoutManager(requireActivity())
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -110,5 +86,10 @@ class NotesListFragment : Fragment() {
     fun View.hideKeyboard() {
         val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         imm.hideSoftInputFromWindow(windowToken, 0)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
