@@ -7,6 +7,8 @@ import com.todo.notesapp.data.models.ToDoNotesData
 class ToDoNotesRepository(private val toDoNotesDao: ToDoNotesDao) {
 
     val getAllData: LiveData<List<ToDoNotesData>> = toDoNotesDao.getAllData()
+    val sortByHighPriority: LiveData<List<ToDoNotesData>> = toDoNotesDao.sortByHighPriority()
+    val sortByLowPriority: LiveData<List<ToDoNotesData>> = toDoNotesDao.sortByLowPriority()
 
     suspend fun insertData(toDoNotesData: ToDoNotesData) {
         toDoNotesDao.insertData(toDoNotesData)

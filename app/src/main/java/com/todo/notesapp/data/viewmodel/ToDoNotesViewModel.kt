@@ -15,10 +15,14 @@ class ToDoNotesViewModel(application: Application): AndroidViewModel(application
     private val toDoNotesDao = ToDoNotesDatabase.getDatabase(application).toDoNotesDao()
     private val toDoNotesRepository : ToDoNotesRepository
     val getAllData: LiveData<List<ToDoNotesData>>
+    val sortyByHighPriority: LiveData<List<ToDoNotesData>>
+    val sortyByLowPriority: LiveData<List<ToDoNotesData>>
 
     init {
         toDoNotesRepository = ToDoNotesRepository(toDoNotesDao)
         getAllData = toDoNotesRepository.getAllData
+        sortyByHighPriority = toDoNotesRepository.sortByHighPriority
+        sortyByLowPriority = toDoNotesRepository.sortByLowPriority
     }
 
     fun insertData(toDoNotesData: ToDoNotesData) {
