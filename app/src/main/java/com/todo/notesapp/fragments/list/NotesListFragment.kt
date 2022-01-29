@@ -17,6 +17,7 @@ import com.todo.notesapp.data.viewmodel.ToDoNotesViewModel
 import com.todo.notesapp.databinding.FragmentNotesListBinding
 import com.todo.notesapp.fragments.SharedViewModel
 import com.todo.notesapp.fragments.list.adapter.NotesListAdapter
+import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 class NotesListFragment : Fragment() {
 
@@ -55,6 +56,9 @@ class NotesListFragment : Fragment() {
         val recyclerView = binding.notesListRecyclerView
         recyclerView.adapter = adapter
         recyclerView.layoutManager = LinearLayoutManager(requireActivity())
+        recyclerView.itemAnimator = SlideInUpAnimator().apply {
+            addDuration = 300
+        }
 
         //Swipe to delete
         onSwipeToDelete(recyclerView)
