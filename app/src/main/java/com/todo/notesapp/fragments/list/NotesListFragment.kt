@@ -2,6 +2,7 @@ package com.todo.notesapp.fragments.list
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -17,6 +18,8 @@ import com.todo.notesapp.databinding.FragmentNotesListBinding
 import com.todo.notesapp.fragments.SharedViewModel
 import com.todo.notesapp.fragments.list.adapter.NotesListAdapter
 import com.todo.notesapp.utils.NotesUtils
+import com.todo.notesapp.utils.hideKeyboard
+import com.todo.notesapp.utils.observeOnce
 import jp.wasabeef.recyclerview.animators.SlideInUpAnimator
 
 class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
@@ -48,7 +51,7 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
 
         // set menu
         setHasOptionsMenu(true)
-        NotesUtils.hideKeyboard(requireActivity())
+        hideKeyboard(requireActivity())
         return binding.root
     }
 
@@ -75,8 +78,8 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
 
         when(item.itemId) {
             R.id.menu_delete_notes -> confirmRemoval()
-            R.id.menu_priority_high -> mToDoNotesViewModel.sortyByHighPriority.observe(this, Observer{adapter.setData(it)})
-            R.id.menu_priority_low -> mToDoNotesViewModel.sortyByLowPriority.observe(this, Observer{adapter.setData(it)})
+            R.id.menu_priority_high -> mToDoNotesViewModel.sortyByHighPriority.observe(viewLifecycleOwner, Observer{adapter.setData(it)})
+            R.id.menu_priority_low -> mToDoNotesViewModel.sortyByLowPriority.observe(viewLifecycleOwner, Observer{adapter.setData(it)})
         }
         if(item.itemId == R.id.menu_delete_all) {
             confirmRemoval()
@@ -101,8 +104,9 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     private fun searchThroughDatabase(query: String) {
         val searchQuery = "%$query%"
-        mToDoNotesViewModel.searchDatabase(searchQuery).observe(this, Observer{ list ->
+        mToDoNotesViewModel.searchDatabase(searchQuery).observeOnce(viewLifecycleOwner, Observer{ list ->
             list?.let {
+                Log.d("ListFragment", "SearchThroughDatabase")
                 adapter.setData(it)
             }
 
