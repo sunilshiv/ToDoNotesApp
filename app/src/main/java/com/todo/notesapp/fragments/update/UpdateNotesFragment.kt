@@ -31,7 +31,7 @@ class UpdateNotesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         // set menu
         setHasOptionsMenu(true)
         // Inflate the layout for this fragment
