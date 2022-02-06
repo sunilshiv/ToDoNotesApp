@@ -1,18 +1,15 @@
 package com.todo.notesapp.fragments.add
 
 import android.os.Bundle
-import android.text.TextUtils
 import android.view.*
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.todo.notesapp.R
-import com.todo.notesapp.data.models.Priority
 import com.todo.notesapp.data.models.ToDoNotesData
 import com.todo.notesapp.data.viewmodel.ToDoNotesViewModel
 import com.todo.notesapp.databinding.FragmentAddNotesBinding
-import com.todo.notesapp.databinding.FragmentNotesListBinding
 import com.todo.notesapp.fragments.SharedViewModel
 import com.todo.notesapp.utils.NotesUtils.hideKeyboard
 
@@ -25,7 +22,7 @@ class AddNotesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         //set menu
         setHasOptionsMenu(true)
         // Inflate the layout for this fragment
@@ -72,6 +69,10 @@ class AddNotesFragment : Fragment() {
     override fun onPause() {
         hideKeyboard()
         super.onPause()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
     }
 
 }
