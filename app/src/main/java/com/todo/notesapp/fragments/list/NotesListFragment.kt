@@ -3,7 +3,6 @@ package com.todo.notesapp.fragments.list
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.GridLayout
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
@@ -30,7 +29,7 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         //Data binding
         _binding = FragmentNotesListBinding.inflate(inflater, container, false)
@@ -135,7 +134,7 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
                 mToDoNotesViewModel.deleteItem(deletedItem)
                 adapter.notifyItemRemoved(viewHolder.adapterPosition)
                 // restore item
-                restoreDeletedData(viewHolder.itemView, deletedItem, viewHolder.adapterPosition)
+                restoreDeletedData(viewHolder.itemView, deletedItem)
             }
         }
         val itemTouchHelper = ItemTouchHelper(swipeToDeleteCallback)
@@ -143,7 +142,7 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
 
     }
 
-    private fun restoreDeletedData(view: View, deletedItem: ToDoNotesData, position: Int) {
+    private fun restoreDeletedData(view: View, deletedItem: ToDoNotesData, ) {
         val snackBar = Snackbar.make(
             view,
             "Deleted '${deletedItem.title}'",
@@ -151,7 +150,6 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
         )
         snackBar.setAction("Undo") {
             mToDoNotesViewModel.insertData(deletedItem)
-            adapter.notifyItemChanged(position)
         }
         snackBar.show()
     }
@@ -160,6 +158,5 @@ class NotesListFragment : Fragment(), SearchView.OnQueryTextListener {
         super.onDestroyView()
         _binding = null
     }
-
 
 }
